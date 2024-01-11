@@ -84,13 +84,24 @@
 
         <p>Orientação a objeto - Alura</p>
         <ul>
-
+            <li>
+                <a href="./ex012/index.php">
+                    Exercicio 12
+                </a>
+            </li>
+            <li>
+                <a href="./ex013/index.php">
+                    Exercicio 13
+                </a>
+            </li>
         </ul>
 
         <!-- <p>Web service e API</p>
         <p>Composer</p>
         <p>MVC e rotas</p>
-        <p>Segurança</p> -->
+        <p>Segurança</p> 
+        <p>React</p> 
+        -->
 
         <br><a href="../desafios/index.php"><button>Desafios</button></a>
     </section>
