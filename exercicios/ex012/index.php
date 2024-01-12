@@ -1,13 +1,11 @@
 <?php
 require_once './autoload.php';
 
-use Alura\Banco\Modelo\Conta\Titular;
-use Alura\Banco\Modelo\Endereco;
-use Alura\Banco\Modelo\Cpf;
-use Alura\Banco\Modelo\Conta\Conta;
-use Alura\Banco\Modelo\Conta\ContaPoupanca;
-use Alura\Banco\Modelo\Funcionario;
-use Alura\Banco\Modelo\Conta\ContaCorrente;
+use Alura\Banco\Modelo\Conta\{Titular, ContaPoupanca, ContaCorrente};
+use Alura\Banco\Modelo\{Endereco, Cpf};
+use Alura\Banco\Service\ControladorDeBonificacoes;
+use Alura\Banco\Modelo\Funcionario\{Desenvolvedor, Funcionario, Gerente, Diretor, EditorVideo};
+use Alura\Banco\Service\Autentificador;
 
 ?>
 
@@ -27,47 +25,58 @@ use Alura\Banco\Modelo\Conta\ContaCorrente;
     </header>
     <section>
         <?php
-        // $endereco = new Endereco('Petrópolis', 'um bairro', 'minha rua', '71B');
-        // $vinicius = new Titular(new Cpf('123.456.789-10'), 'Vinicius Dias', $endereco);
-        // $primeiraConta = new Conta($vinicius);
-        // $primeiraConta->depositar(500);
-        // $primeiraConta->sacar(300);
+        
+        echo "<h1>Criação de titulares</h1>";
+        $endereco = new Endereco('Petrópolis', 'um bairro', 'minha rua', '71B');
+        $vinicius = new Titular(new Cpf('123.456.789-10'), 'Vinicius Dias', $endereco);
+        $primeiraConta = new ContaCorrente($vinicius);
+        $primeiraConta->depositar(500);
+        $primeiraConta->sacar(300);
 
-        // echo $primeiraConta->getTitular();
-        // echo $primeiraConta->getSaldo();
-        // echo "<br>";
+        echo $primeiraConta->getTitular();
+        echo $primeiraConta->getSaldo();
+        echo $endereco;
 
-        // $patricia = new Titular(new Cpf('698.549.548-10'), 'Patricia', $endereco);
-        // $segundaConta = new Conta($patricia);
-        // var_dump($segundaConta);
+        // Excluir
+        $outroEndereco = new Endereco('A', 'b', 'c', '1D');
+        $outra = new ContaPoupanca(new Titular(new Cpf('123.654.789-01'), 'Abcdefg', $outroEndereco));
+        unset($segundaConta);
+        echo ContaPoupanca::recuperarNumeroDeContas();
 
-        // echo $segundaConta->getTitular();
-        // echo $segundaConta->getSaldo();
-        // echo "<br>";
+        
+        // bonificações de funcionarios
+        echo "<h1>Bonificações de funcionarios</h1>";
+        $editor = new EditorVideo('Paulo', new Cpf('199.428.679-16'), 1500);
+        $desenvolvedor = new Desenvolvedor('Alexandre', new Cpf('100.428.679-16'), 1000);
+        $gerente = new Gerente('Patricia', new Cpf('110.428.679-16'), 3000);
+        $diretor = new Diretor('Renata', new Cpf('110.428.679-16'), 5000);
+        // var_dump($desenvolvedor);
 
-        // $umFuncionario = new Funcionario(new Cpf('100.428.679-16'), 'Isadora', 'desenvolvedora');
-        // var_dump($umFuncionario);
+        $controlador = new ControladorDeBonificacoes;
+        $controlador->adicionarBonificacoes($desenvolvedor);
+        $controlador->adicionarBonificacoes($gerente);
+        $controlador->adicionarBonificacoes($diretor);
+        $controlador->adicionarBonificacoes($editor);
 
-        // excluir
-        // $outroEndereco = new Endereco('A', 'b', 'c', '1D');
-        // $outra = new Conta(new Titular(new Cpf('123.654.789-01'), 'Abcdefg', $outroEndereco));
-        // unset($segundaConta);
-        // echo Conta::recuperarNumeroDeContas();
+        echo "Total: {$controlador->getTotal()}";
 
-        $conta = new ContaPoupanca(
-            new Titular(
-                new Cpf('10042867916'),
-                'Isadora de Mello',
-                new Endereco('Brusque', 'Cedrinho', 'Rua Pão de queijo', '316D')
-            )
-        );
+        // Aumento
+        echo "<h1>Aumento de salario</h1>";
+        echo "<p>Salario inicial: " . $desenvolvedor->getSalario() . "<br></p>";
+        $desenvolvedor->sobedeNivel();
+        echo "<p>Salario novo: " . $desenvolvedor->getSalario() . "<br></p>";
 
-        $conta->depositar(500);
-        $conta->sacar(100);
-        echo $conta->getSaldo();
+        // Login
+        echo "<h1>Login</h1>";
+        $autenticador =  new Autentificador();
+        $autenticador->tentarLogin($diretor, '1234');
+
+        
         ?>
+
 
         <a href="javascript:history.go(-1)"><button>Voltar</button></a>
     </section>
 </body>
+
 </html>

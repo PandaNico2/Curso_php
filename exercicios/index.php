@@ -89,11 +89,6 @@
                     Exercicio 12
                 </a>
             </li>
-            <li>
-                <a href="./ex013/index.php">
-                    Exercicio 13
-                </a>
-            </li>
         </ul>
 
         <!-- <p>Web service e API</p>
